@@ -8,7 +8,7 @@ class TodoCreate(BaseModel):
     title: str
 class TodoUpdate(BaseModel):
     is_completed: bool
-    
+
 app = FastAPI(title="Todo List API")
 
 # 建立第一個 API 路由 (GET 請求)
@@ -47,6 +47,36 @@ def get_todos():
         return {
             "status": "success",
             "message": "待辦事項獲取成功！",
+            "data": response.data
+        }
+    except Exception as e:
+        return {
+            "status": "error", 
+            "message": f"發生錯誤: {e}"
+        }
+#update data
+@app.patch("/todos/{todo_id}")
+def update_todo(todo_id: str, update_data: TodoUpdate):
+    try:
+        response = supabase_client.table("todos").update({"is_completed": update_data.is_completed}).eq("id", todo_id).execute() #確保只更新特定 ID 的待辦事項
+        return {
+            "status": "success",
+            "message": "待辦事項更新成功！",
+            "data": response.data
+        }
+    except Exception as e:
+        return {
+            "status": "error", 
+            "message": f"發生錯誤: {e}"
+        }
+#delete data
+@app.delete("/todos/{todo_id}")
+def delete_todo(todo_id: str):
+    try:
+        response = supabase_client.table("todos").delete().eq("id", todo_id).execute() #確保只刪除特定 ID 的待辦事項
+        return {
+            "status": "success",
+            "message": "待辦事項刪除成功！",
             "data": response.data
         }
     except Exception as e:
