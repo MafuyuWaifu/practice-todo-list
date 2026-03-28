@@ -6,7 +6,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 from supabase import ClientOptions, create_client
 
-from database import supabase_client
+from app.database import supabase_client
 
 
 class TodoCreate(BaseModel):
