@@ -5,6 +5,9 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+// 🌟 新增這行：抓取後端 API 網址
+const API_URL = import.meta.env.VITE_API_URL
+
 type Todo = {
   id: string
   title: string
@@ -87,7 +90,7 @@ function App() {
 
     setLoadingTodos(true)
     try {
-      const response = await fetch('http://127.0.0.1:8000/todos', {
+      const response = await fetch(`${API_URL}/todos`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -124,7 +127,7 @@ function App() {
     setTodos((current) => [optimisticTodo, ...current])
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/todos', {
+      const response = await fetch(`${API_URL}/todos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -170,7 +173,7 @@ function App() {
     )
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/todos/${todoId}`, {
+      const response = await fetch(`${API_URL}/todos/${todoId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -203,7 +206,7 @@ function App() {
     setTodos((current) => current.filter((todo) => todo.id !== todoId))
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/todos/${todoId}`, {
+      const response = await fetch(`${API_URL}/todos/${todoId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
